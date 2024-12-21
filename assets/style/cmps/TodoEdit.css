@@ -1,0 +1,9 @@
+.todo-edit {
+    text-align: center;
+}
+
+.todo-edit form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
