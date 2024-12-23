@@ -1,4 +1,5 @@
 import { storageService } from './async-storage.service.js'
+import { utilService } from './util.service.js'
 
 const STORAGE_KEY = 'userDB'
 const STORAGE_KEY_LOGGEDIN = 'loggedinUser'
@@ -9,8 +10,11 @@ export const userService = {
     signup,
     getById,
     getLoggedinUser,
-    updateScore,
-    getEmptyCredentials
+    updateBalance,
+    getEmptyCredentials,
+    userInfo,
+    updateUserProfile,
+    addActivity
 }
 
 
@@ -29,23 +33,29 @@ function login({ username, password }) {
 }
 
 function signup({ username, password, fullname }) {
-    const user = { username, password, fullname, score: 10000 }
+    const user = { username, password, fullname, balance: 10000, activities: [], color: "#000000", bgColor: "#ffffff" }
     return storageService.post(STORAGE_KEY, user)
         .then(_setLoggedinUser)
 }
 
-function updateScore(diff) {
+function updateBalance(diff) {
     const loggedInUserId = getLoggedinUser()._id
     return userService.getById(loggedInUserId)
         .then(user => {
-            if (user.score + diff < 0) return Promise.reject('No credit')
-            user.score += diff
+            if (user.balance + diff < 0) return Promise.reject('No credit')
+            user.balance += diff
             return storageService.put(STORAGE_KEY, user)
         })
         .then(user => {
             _setLoggedinUser(user)
-            return user.score
+            return user.balance
         })
+}
+
+function userInfo() {
+    const loggedInUserId = getLoggedinUser()._id
+    if(loggedInUserId === null) return false;
+    return userService.getById(loggedInUserId);
 }
 
 function logout() {
@@ -58,9 +68,37 @@ function getLoggedinUser() {
 }
 
 function _setLoggedinUser(user) {
-    const userToSave = { _id: user._id, fullname: user.fullname, score: user.score }
+    const userToSave = { _id: user._id, fullname: user.fullname, balance: user.balance, activities: user.activities, color: user.color, bgColor: user.bgColor }
     sessionStorage.setItem(STORAGE_KEY_LOGGEDIN, JSON.stringify(userToSave))
     return userToSave
+}
+
+function updateUserProfile(newProfile) {
+    const loggedInUserId = getLoggedinUser()._id
+    return userService.getById(loggedInUserId)
+        .then(user => {
+            user = newProfile;
+            return storageService.put(STORAGE_KEY, user)
+        })
+        .then(user => {
+            user = newProfile;
+            _setLoggedinUser(user)
+            return newProfile;
+        })
+}
+
+function addActivity(title) {
+    const activityToInsert = {
+        id: utilService.makeId(6),
+        txt: title,
+        timestamp: Date.now()
+    }
+    const loggedInUserId = getLoggedinUser()._id
+    return userService.getById(loggedInUserId)
+        .then(user => {
+            user.activities.push(activityToInsert)
+            return storageService.put(STORAGE_KEY, user)
+        })
 }
 
 function getEmptyCredentials() {
@@ -72,7 +110,7 @@ function getEmptyCredentials() {
 }
 
 
-// Test Data
+// // Test Data
 // userService.signup({username: 'bobo', password: 'bobo', fullname: 'Bobo McPopo'})
 // userService.login({username: 'bobo', password: 'bobo'})
 

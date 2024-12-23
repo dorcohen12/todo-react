@@ -22,23 +22,25 @@ export function TodoFilter({ filterBy, onSetFilter }) {
         <section className="todo-filter full main-layout">
             <h2>Todos Filter</h2>
             <form >
-                <label htmlFor="vendor">Vendor:</label>
+                <label htmlFor="txt">Text:</label>
                 <input type="text"
-                    id="vendor"
+                    id="txt"
                     name="txt"
-                    placeholder="By vendor"
+                    placeholder="By Text"
                     value={filterByToEdit.txt}
                     onChange={handleChange}
                 />
 
-                <label htmlFor="maxPrice">Max price:</label>
-                <input type="number"
-                    id="maxPrice"
-                    name="maxPrice"
-                    placeholder="By max price"
-                    value={filterByToEdit.maxPrice || ''}
-                    onChange={handleChange}
-                />
+                <label htmlFor="isDone">Status:</label>
+                <select 
+                    id="isDone"
+                    name="isDone"
+                    onChange={handleChange}>
+                        <option value="all">All</option>
+                        <option value="active">Active</option>
+                        <option value="done">Done</option>
+                    </select>
+            
 
             </form>
 

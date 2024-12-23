@@ -7,7 +7,8 @@ export const CHANGE_BY = 'CHANGE_BY'
 
 //* User
 export const SET_USER = 'SET_USER'
-export const SET_USER_SCORE = 'SET_USER_SCORE'
+export const SET_USER_BALANCE = 'SET_USER_BALANCE'
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 
 
 const initialState = {
@@ -18,22 +19,17 @@ const initialState = {
 
 export function userReducer(state = initialState, cmd = {}) {
     switch (cmd.type) {
-        //* Count
-        case INCREMENT:
-            return { ...state, count: state.count + 1 }
-        case DECREMENT:
-            return { ...state, count: state.count - 1 }
-        case CHANGE_BY:
-            return { ...state, count: state.count + cmd.diff }
-
         //* User
         case SET_USER:
             return {
                 ...state,
                 loggedInUser: cmd.user
             }
-        case SET_USER_SCORE:
-            const loggedInUser = { ...state.loggedInUser, score: cmd.score }
+        case UPDATE_PROFILE:
+            const newloggedInUser = { ...state.loggedInUser }
+            return { ...state, newloggedInUser }
+        case SET_USER_BALANCE:
+            const loggedInUser = { ...state.loggedInUser, balance: cmd.balance }
             return { ...state, loggedInUser }
         default:
             return state

@@ -18,14 +18,23 @@ export const todoService = {
 
 function query(filterBy = {}) {
     if (!filterBy.txt) filterBy.txt = ''
-    if (!filterBy.maxPrice) filterBy.maxPrice = Infinity
+    if(!filterBy.isDone) filterBy.isDone = 'all';
     const regExp = new RegExp(filterBy.txt, 'i')
+    console.log(filterBy);
     return storageService.query(STORAGE_KEY)
         .then(todos => {
-            return todos.filter(todo =>
-                regExp.test(todo.vendor) &&
-                todo.price <= filterBy.maxPrice
-            )
+            if (filterBy.txt) {
+                todos = todos.filter(todo => regExp.test(todo.txt))
+            }
+
+            if(filterBy.isDone !== 'all'){
+                if(filterBy.isDone === 'active') {
+                    todos = todos.filter(todo => !todo.isDone)
+                } else {
+                    todos = todos.filter(todo =>todo.isDone)
+                }
+            }
+            return todos;
         })
 }
 
@@ -42,28 +51,35 @@ function save(todo) {
     if (todo._id) {
         return storageService.put(STORAGE_KEY, todo)
     } else {
-        // when switching to backend - remove the next line
-        todo.owner = userService.getLoggedinUser()
         return storageService.post(STORAGE_KEY, todo)
     }
 }
 
 function getEmptyTodo() {
     return {
-        vendor: '',
-        price: '',
-    }
+        // _id: _makeId(),
+        txt: '',
+        importance: 5,
+        isDone: false,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
+    };
 }
 
 function getRandomTodo() {
     return {
-        vendor: 'Susita-' + (Date.now() % 1000),
-        price: utilService.getRandomIntInclusive(1000, 9000),
+        txt: utilService.makeLorem(1),
+        importance: Math.floor(Math.random() * 10) + 1,
+        isDone: (Math.random > 0.5 ? true : false),
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+        color: '#' + Math.floor(Math.random() * 16777215).toString(16)
     }
 }
 
 function getDefaultFilter() {
-    return { txt: '', maxPrice: '' }
+    return { txt: '', isDone: '' }
 }
 
 // TEST DATA

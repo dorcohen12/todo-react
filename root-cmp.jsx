@@ -11,6 +11,7 @@ import { TodoIndex } from './pages/TodoIndex.jsx'
 import { TodoEdit } from './pages/TodoEdit.jsx'
 import { TodoDetails } from './pages/TodoDetails.jsx'
 import { store } from './store/store.js'
+import { UserDetails } from './pages/UserDetails.jsx'
 const { Provider } = ReactRedux
 
 export function App() {
@@ -28,6 +29,7 @@ export function App() {
                             <Route element={<TodoEdit />} path="/todo/edit" />
                             <Route element={<TodoEdit />} path="/todo/edit/:todoId" />
                             <Route element={<TodoDetails />} path="/todo/:todoId" />
+                            <Route element={<UserDetails />} path="/userdetails" />
                         </Routes>
                     </main>
                     <AppFooter />

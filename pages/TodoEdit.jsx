@@ -35,7 +35,7 @@ export function TodoEdit() {
 
     function onSaveTodo(ev) {
         ev.preventDefault()
-        if (!todoToEdit.price) todoToEdit.price = 1000
+        if (!todoToEdit.importance) todoToEdit.importance = 10
         saveTodo(todoToEdit)
             .then(() => {
                 showSuccessMsg('Todo Saved!')
@@ -49,27 +49,36 @@ export function TodoEdit() {
 
 
     const loadingClass = isLoadingTodo ? 'loading' : ''
-    const { vendor, price } = todoToEdit
+    const { txt, importance, color } = todoToEdit
     return (
         <section className={`todo-edit ${loadingClass}`}>
             <h2>{todoId ? 'Edit' : 'Add'} Todo</h2>
             <form onSubmit={onSaveTodo} >
-                <label htmlFor="vendor">Vendor : </label>
+                <label htmlFor="txt">Text : </label>
                 <input type="text"
-                    name="vendor"
-                    id="vendor"
-                    placeholder="Enter vendor..."
-                    value={vendor}
-                    onChange={handleChange}
+                    name="txt"
+                    id="txt"
+                    placeholder="Enter title..."
+                    value={txt}
+                    onChange={handleChange} required
                 />
 
-                <label htmlFor="price">Price : </label>
-                <input type="number"
-                    name="price"
-                    id="price"
-                    placeholder="Enter price"
-                    value={price}
-                    onChange={handleChange}
+                <label htmlFor="importance">Importance : </label>
+                <input type="number" min="1" max="10"
+                    name="importance"
+                    id="importance"
+                    placeholder="Enter importance"
+                    value={importance}
+                    onChange={handleChange} required
+                />
+
+                <label htmlFor="importance">Color: </label>
+                <input type="color"
+                    name="color"
+                    id="color"
+                    placeholder="Enter color"
+                    value={color}
+                    onChange={handleChange} required
                 />
 
                 <div>

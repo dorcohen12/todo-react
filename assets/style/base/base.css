@@ -48,3 +48,16 @@ object {
 a.active {
   text-decoration: underline;
 }
+.table {
+  width: 100%;
+  text-align: center;
+}
+table tr th, table tr td{
+  padding: 1rem;
+  color: black;
+  border: 1px solid #333;
+}
+.table tr:nth-child(odd) td {
+  color: black;
+  background: #efefef;
+}

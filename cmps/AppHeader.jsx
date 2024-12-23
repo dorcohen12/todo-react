@@ -42,16 +42,13 @@ export function AppHeader() {
                 <nav className="app-nav">
                     <NavLink to="/" >Home</NavLink>
                     <NavLink to="/about" >About</NavLink>
-                    <NavLink to="/todo" >Todos</NavLink>
-                    <a className='shopping-todot-link' onClick={onToggleTodot} href="#">
-                        🛒 Todot
-                        {todotLength > 0 && <span className='shopping-todot-count'>{todotLength}</span>}
-                    </a>
+                    {user ? <NavLink to="/todo" >Todos</NavLink> : ''}
+                    {user ? (<NavLink to="/userdetails" >My Profile</NavLink>) : ''}
                 </nav>
             </section>
             {user ? (
                 < section >
-                    <span to={`/user/${user._id}`}>Hello {user.fullname} <span>${user.score.toLocaleString()}</span></span>
+                    <span to={`/user/${user._id}`}>Hello {user.fullname} <span>${user.balance.toLocaleString()}</span></span>
                     <button onClick={onLogout}>Logout</button>
                 </ section >
             ) : (

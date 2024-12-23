@@ -23,9 +23,9 @@ export function TodoDetails() {
     if (!todo) return <div>Loading...</div>
     return (
         <section className="todo-details">
-            <h1>Todo vendor : {todo.vendor}</h1>
-            <h5>Price: ${todo.price}</h5>
-            <p>⛐</p>
+            <h1>Todo title : {todo.title}</h1>
+            <h5>Importance: ${todo.importance}</h5>
+            <h6>Status: {todo.isDone ? 'Completed' : 'Pending'}</h6>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi voluptas cumque tempore, aperiam sed dolorum rem! Nemo quidem, placeat perferendis tempora aspernatur sit, explicabo veritatis corrupti perspiciatis repellat, enim quibusdam!</p>
             <Link to={`/todo/edit/${todo._id}`}>Edit</Link> &nbsp;
             <Link to={`/todo`}>Back</Link>
